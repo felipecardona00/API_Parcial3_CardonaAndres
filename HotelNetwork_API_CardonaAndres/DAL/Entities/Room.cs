@@ -4,7 +4,7 @@ using System.Diagnostics.Metrics;
 
 namespace HotelNetwork_API_CardonaAndres.DAL.Entities
 {
-    public class Room
+    public class Room:AuditBase
     {
         [Display(Name = "Hotel")]
         [Range(100,999, ErrorMessage = "Field {0} should be between 100 and 999")]
