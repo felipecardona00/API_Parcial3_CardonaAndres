@@ -9,7 +9,7 @@ namespace HotelNetwork_API_CardonaAndres.Domain.Interfaces
         Task<Hotel> CreateHotelAsync(Hotel Hotel);
         Task<Hotel?> GetHotelByIdAsync(Guid id);
         Task<Hotel?> GetHotelByCityAsync(string city);
-        Task<Hotel?> EditHotelAsync(Hotel Hotel);
+        Task<Hotel?> EditHotelAsync(Guid id, int stars);
         Task<Hotel?> DeleteHotelAsync(Guid id);
     }
 }

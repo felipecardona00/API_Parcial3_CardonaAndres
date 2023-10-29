@@ -37,10 +37,10 @@ namespace HotelNetwork_API_CardonaAndres.Domain.Services
         {
             try
             {
-                Hotel? hotel = await _context.Hotels.FirstOrDefaultAsync(h => h.Id == id);
+                Hotel? hotel = await _context.Hotels.Include(h => h.Rooms).FirstOrDefaultAsync(h => h.Id == id);
                 if (hotel != null)
                 {
-                    _context.Rooms.RemoveRange(hotel.Rooms.ToList());
+                    _context.Rooms.RemoveRange(hotel.Rooms.AsEnumerable());
                     _context.Hotels.Remove(hotel);
                     await _context.SaveChangesAsync();
                 }
@@ -53,14 +53,21 @@ namespace HotelNetwork_API_CardonaAndres.Domain.Services
             }
         }
 
-        public async Task<Hotel?> EditHotelAsync(Hotel hotel)
+        public async Task<Hotel?> EditHotelAsync(Guid id, int stars)
         {
             try
             {
-                hotel.ModifiedDate = DateTime.Now;
+                var hotel = await GetHotelByIdAsync(id);
 
-                _context.Hotels.Update(hotel);
-                await _context.SaveChangesAsync();
+                if (hotel != null) 
+                {
+                    hotel.ModifiedDate = DateTime.Now;
+                    hotel.Stars = stars;
+
+                    _context.Hotels.Update(hotel);
+                    await _context.SaveChangesAsync();
+                }
+                
 
                 return hotel;
             }
